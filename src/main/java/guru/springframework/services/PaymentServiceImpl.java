@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
-    static final String PAYMENT_ID_HEADER = "payment_id";
+    public static final String PAYMENT_ID_HEADER = "payment_id";
 
     private final PaymentRepository repository;
     private final StateMachineFactory<PaymentState, PaymentEvent> stateMachineFactory;
@@ -41,12 +41,13 @@ public class PaymentServiceImpl implements PaymentService {
     public StateMachine<PaymentState, PaymentEvent> authorizePayment(Long paymentId) {
         StateMachine<PaymentState, PaymentEvent> sm = build(paymentId);
 
-        sendEvent(paymentId, sm, PaymentEvent.PRE_AUTH_APPROVED);
+        sendEvent(paymentId, sm, PaymentEvent.AUTHORIZE);
 
         return sm;
     }
 
     @Override
+    @Deprecated // not needed
     public StateMachine<PaymentState, PaymentEvent> declineAuth(Long paymentId) {
         StateMachine<PaymentState, PaymentEvent> sm = build(paymentId);
 
